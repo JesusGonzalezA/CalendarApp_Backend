@@ -1,18 +1,28 @@
+//**************************************************************************
+
+// Config server
+
+//**************************************************************************
+
 const express = require('express');
+require ('dotenv').config();
+
+//--------------------------------------------------------------------------
 
 // Create server
 const app = express();
 
+// Public directory
+app.use( express.static('public') );
+
 // Routes
-app.get('/', (req, res) => {
-    res.json({
-        hey: 'Hola mundo'
-    })
-})
+app.use( '/api/auth', require('./routes/auth.js') );
 
 //Listen requests
-app.listen( 3030, () => {
-    console.log('Server running on port', 3030);
+app.listen( process.env.PORT, () => {
+    console.log('Server running on port', process.env.PORT);
 } );
- 
+
+//--------------------------------------------------------------------------
+
  
