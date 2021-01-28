@@ -5,6 +5,7 @@
 //**************************************************************************
 
 const express = require('express');
+const cors = require('cors');
 const env  = require ('dotenv');
 const env_expand = require('dotenv-expand');
 
@@ -19,6 +20,9 @@ const app = express();
 
 // Connect DB
 dbConnection();
+
+// CORS
+app.use( cors() );
 
 // Public directory
 app.use( express.static('public') );
