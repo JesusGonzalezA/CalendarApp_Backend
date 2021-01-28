@@ -29,7 +29,7 @@ const addUser = async( req, res = response ) => {
 
         // Encrypt password
         const salt = bcrypt.genSaltSync();
-        user.password = bcrypt.hashSync( user.password, salt );
+        user.password = bcrypt.hashSync( password, salt );
 
         await user.save();
 
