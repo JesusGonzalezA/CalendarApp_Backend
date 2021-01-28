@@ -5,12 +5,19 @@
 //**************************************************************************
 
 const express = require('express');
-require ('dotenv').config();
+const env  = require ('dotenv');
+const env_expand = require('dotenv-expand');
+const { dbConnection } = require('./database/config.js');
+
+env_expand( env.config() );
 
 //--------------------------------------------------------------------------
 
 // Create server
 const app = express();
+
+// Connect DB
+dbConnection();
 
 // Public directory
 app.use( express.static('public') );
