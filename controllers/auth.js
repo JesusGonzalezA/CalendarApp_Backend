@@ -10,9 +10,10 @@ const { response } = require('express');
 
 const addUser = ( req, res = response ) => {
 
-    res.json({
+    res.status(201).json({
         ok: true,
-        msg: 'register'
+        msg: 'register',
+        ...req.body
     })
 
 }

@@ -15,6 +15,9 @@ const app = express();
 // Public directory
 app.use( express.static('public') );
 
+// Read body correctly
+app.use( express.json() );
+
 // Routes
 app.use( '/api/auth', require('./routes/auth.js') );
 
