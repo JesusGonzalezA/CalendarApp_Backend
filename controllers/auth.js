@@ -8,14 +8,15 @@ const { response } = require('express');
 const bcrypt = require('bcryptjs');
 
 const { BadRequest } = require('../responses/BadRequest');
-const { Success } = require('../responses/Success')
-const User = require('../models/User')
+const { Success } = require('../responses/Success');
+const User = require('../models/User');
+const { generateJWT } = require('../helpers/jwt')
 
 //--------------------------------------------------------------------------
 
 const addUser = async( req, res = response ) => {
 
-    const { email, password } = req.body;
+    const { email } = req.body;
 
     try {
         
@@ -29,13 +30,18 @@ const addUser = async( req, res = response ) => {
 
         // Encrypt password
         const salt = bcrypt.genSaltSync();
-        user.password = bcrypt.hashSync( password, salt );
+        user.password = bcrypt.hashSync( user.password, salt );
 
         await user.save();
 
+        
+        // Generate JWT
+        const token = await generateJWT( user.uid, user.name );
+
         res.status(201).json( Success({
             uid: user.id,
-            name: user.name
+            name: user.name,
+            token
         }));
 
     } catch (error) {
@@ -51,12 +57,42 @@ const addUser = async( req, res = response ) => {
 
 //--------------------------------------------------------------------------
 
-const loginUser = ( req, res = response ) => {
+const loginUser = async ( req, res = response ) => {
 
-    res.json({
-        ok: true,
-        msg: 'login'
-    })
+    const { email, password } = req.body;
+
+    try {
+        
+        const user = await User.findOne({ email });
+        
+        if ( !user ) {
+            return res.status(400).json( BadRequest( 'User does not exist' ) );
+        }
+
+        // Encrypt password
+        const validPassword = bcrypt.compareSync( password, user.password );
+
+        if ( !validPassword ){
+            return res.status(400).json( BadRequest( 'Incorrect password' ) );
+        }
+
+        // Generate JWT
+        const token = await generateJWT( user.uid, user.name );
+
+        res.status(201).json( Success({
+            uid: user.id,
+            name: user.name,
+            token
+        }));
+
+    } catch (error) {
+        
+        res.status(500).json({
+            ok: false,
+            msg: 'Sorry, something went bad',
+        })
+
+    }
 
 }
 
