@@ -38,6 +38,7 @@ class Server {
     
     setRoutes() {
         this.app.use( '/api/auth', require('./routes/auth.js') );
+        this.app.use( '/api/events', require('./routes/events.js'));
     }
 
     start() {
