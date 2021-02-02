@@ -7,7 +7,7 @@
 
 //**************************************************************************
 
-const BadRequest = ( msg ) => {
+const BadRequest = ( msg = 'Sorry, something went bad' ) => {
     
     return {
         ok: false,
