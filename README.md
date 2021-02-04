@@ -4,6 +4,9 @@ You can login, register and create, delete, update and list the events from the\
 calendar. You need a jwt in order to do the CRUD operations.
 
 :warning: **I may have deleted the monogodb connection. Set up yours in .env.**
+https://jesusgonzaleza-calendar.herokuapp.com/login
+ https://jesusgonzaleza.github.io/login
+![](demo.gif)
 
 ## :star: What I've learnt...
 
