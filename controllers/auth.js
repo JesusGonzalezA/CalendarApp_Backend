@@ -76,7 +76,7 @@ const loginUser = async ( req, res = response ) => {
         }
 
         // Generate JWT
-        const token = await generateJWT( user.uid, user.name );
+        const token = await generateJWT( user.id, user.name );
 
         res.status(201).json( Success({
             uid: user.id,
